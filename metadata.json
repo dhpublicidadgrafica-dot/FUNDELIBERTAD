@@ -1,0 +1,6 @@
+{
+  "name": "FUNDELIBERTAD",
+  "description": "Fundación de Derechos Humanos por la Libertad y la Vida. Institución dedicada a la defensa de derechos humanos, la construcción de paz y el apoyo a comunidades vulnerables en Medellín, Colombia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

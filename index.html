@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          if (typeof window !== 'undefined') {
+            var originalFetch = window.fetch;
+            var currentFetch = originalFetch;
+
+            // Redefine window.fetch to have both getter and setter so that libraries
+            // assigning to window.fetch or globalThis.fetch won't crash due to read-only getter.
+            try {
+              Object.defineProperty(window, 'fetch', {
+                get: function() {
+                  return currentFetch;
+                },
+                set: function(value) {
+                  currentFetch = value;
+                },
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e) {
+              // Fallback: try to assign directly if defineProperty fails
+              try {
+                window.fetch = originalFetch;
+              } catch (err) {}
+            }
+
+            var globalThisProxy = new Proxy(window, {
+              get: function(target, prop) {
+                if (prop === 'fetch') {
+                  return currentFetch;
+                }
+                if (prop === 'globalThis' || prop === 'self') {
+                  return globalThisProxy;
+                }
+                var val = target[prop];
+                if (typeof val === 'function') {
+                  // Bind non-constructor functions to target to avoid "Illegal invocation" error.
+                  // Constructors have a prototype property and shouldn't be bound.
+                  if (val.prototype) {
+                    return val;
+                  }
+                  return val.bind(target);
+                }
+                return val;
+              },
+              set: function(target, prop, value) {
+                if (prop === 'fetch') {
+                  currentFetch = value;
+                  return true;
+                }
+                try {
+                  target[prop] = value;
+                } catch (e) {}
+                return true;
+              }
+            });
+
+            try {
+              Object.defineProperty(window, 'globalThis', {
+                value: globalThisProxy,
+                writable: true,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e) {}
+
+            try {
+              Object.defineProperty(window, 'self', {
+                value: globalThisProxy,
+                writable: true,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e) {}
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <title>My Google AI Studio App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
