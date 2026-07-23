@@ -203,7 +203,7 @@ export default function Footer({ onDonateClick }: FooterProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-center md:text-left">
             <p>© {new Date().getFullYear()} FUNDELIBERTAD. Todos los derechos reservados.</p>
-            <p className="text-[10px] mt-0.5 text-slate-600">Fundación de Derechos Humanos por la Libertad y la Vida • Nit: 900.541.211-5</p>
+            <p className="text-[10px] mt-0.5 text-slate-600">Fundación de Derechos Humanos por la Libertad y la Vida • Nit: 900.497.212-2</p>
           </div>
           <div className="flex items-center gap-4">
             <span className="text-[10px]">Medellín, Colombia</span>

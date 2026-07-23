@@ -1,106 +1,145 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Heart, Shield, CreditCard, Send, Sparkles, CheckCircle2 } from 'lucide-react';
-import { Donation } from '../types';
+import { 
+  X, ShieldCheck, CheckCircle2, 
+  Lock, AlertCircle, Send, QrCode, Building2, Smartphone, Copy, Check
+} from 'lucide-react';
+import { Donation, DonationStats } from '../types';
 
 interface DonationModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const COUNTRIES_LIST = [
+  'Colombia', 'Estados Unidos', 'España', 'México', 'Argentina', 'Chile',
+  'Perú', 'Ecuador', 'Canadá', 'Reino Unido', 'Alemania', 'Francia', 'Suiza', 'Otro país'
+];
+
 export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
-  const [amount, setAmount] = useState<number>(25);
-  const [customAmount, setCustomAmount] = useState<string>('');
-  const [isCustom, setIsCustom] = useState<boolean>(false);
-  const [donationType, setDonationType] = useState<'one-time' | 'recurring'>('one-time');
-  const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'paypal'>('credit_card');
-  
-  // Form fields
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [cvv, setCvv] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // Stats state
+  const [, setStats] = useState<DonationStats>({
+    totalRaised: 125000000,
+    goal: 0,
+    totalDonationsCount: 315,
+    averageDonation: 396825,
+    recentDonors: [],
+    monthlyData: [],
+    annualData: []
+  });
+
+  // Donor Personal Info
+  const [fullName, setFullName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [country, setCountry] = useState<string>('Colombia');
+  const [city, setCity] = useState<string>('Medellín');
+  const [message, setMessage] = useState<string>('');
+  const [receiveNews, setReceiveNews] = useState<boolean>(true);
+  const [acceptPrivacy, setAcceptPrivacy] = useState<boolean>(true);
+  const [copiedAccount, setCopiedAccount] = useState<boolean>(false);
+
+  // Processing state
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [completedDonation, setCompletedDonation] = useState<Donation | null>(null);
 
-  const suggestedAmounts = [10, 25, 50, 100];
+  // Fetch campaign statistics on load
+  useEffect(() => {
+    fetch('/api/statistics')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data && data.totalRaised) {
+          setStats(data);
+        }
+      })
+      .catch(() => {
+        // Fallback silently
+      });
+  }, [isOpen, completedDonation]);
 
-  const handleAmountSelect = (val: number) => {
-    setAmount(val);
-    setIsCustom(false);
-    setCustomAmount('');
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedAccount(true);
+    setTimeout(() => setCopiedAccount(false), 2000);
   };
 
-  const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setCustomAmount(val);
-    setIsCustom(true);
-    const parsed = parseFloat(val);
-    if (!isNaN(parsed) && parsed > 0) {
-      setAmount(parsed);
-    } else {
-      setAmount(0);
+  const validateForm = (): boolean => {
+    if (!fullName.trim()) {
+      setErrorMessage('Por favor ingrese su nombre completo.');
+      return false;
     }
+    if (!email.trim() || !email.includes('@')) {
+      setErrorMessage('Por favor ingrese un correo electrónico válido.');
+      return false;
+    }
+    if (!acceptPrivacy) {
+      setErrorMessage('Debe aceptar la Política de Privacidad para continuar.');
+      return false;
+    }
+
+    setErrorMessage(null);
+    return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Donation Registration Submission
+  const handleDonationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (amount <= 0) {
-      alert('Por favor ingrese un monto de donación válido.');
-      return;
-    }
-    if (!email) {
-      alert('Por favor ingrese su correo electrónico.');
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
+    setErrorMessage(null);
 
-    // Simulate payment processing
-    setTimeout(() => {
-      const newDonation: Donation = {
-        id: 'DON-' + Math.floor(Math.random() * 1000000),
-        amount: amount,
-        currency: 'USD',
-        email: email,
-        name: name || 'Donante Anónimo',
-        date: new Date().toISOString().split('T')[0],
-        type: donationType,
-        paymentMethod: paymentMethod,
-        status: 'completed'
-      };
+    try {
+      const res = await fetch('/api/donations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: 50000,
+          currency: 'COP',
+          name: fullName,
+          email,
+          phone,
+          country,
+          city,
+          message,
+          receiveNews,
+          type: 'one-time',
+          paymentMethod: 'bank_transfer',
+          status: 'completed'
+        })
+      });
 
-      // Save to localStorage
-      const existing = localStorage.getItem('fundelibertad_donations');
-      const donationsList = existing ? JSON.parse(existing) : [];
-      donationsList.unshift(newDonation);
-      localStorage.setItem('fundelibertad_donations', JSON.stringify(donationsList));
+      if (!res.ok) {
+        const errJson = await res.json();
+        throw new Error(errJson.error || 'No se pudo registrar la donación.');
+      }
 
-      // Trigger custom storage event for other components to react
+      const donationData: Donation = await res.json();
+
+      // Update local storage and trigger update event
+      const localDonations = JSON.parse(localStorage.getItem('fundelibertad_donations') || '[]');
+      localDonations.unshift(donationData);
+      localStorage.setItem('fundelibertad_donations', JSON.stringify(localDonations));
       window.dispatchEvent(new Event('storage_update'));
 
       setIsSubmitting(false);
-      setCompletedDonation(newDonation);
-    }, 1500);
+      setCompletedDonation(donationData);
+    } catch (err: any) {
+      console.error(err);
+      setIsSubmitting(false);
+      setErrorMessage(err.message || 'Error al registrar la donación.');
+    }
   };
 
   const resetForm = () => {
-    setAmount(25);
-    setCustomAmount('');
-    setIsCustom(false);
-    setDonationType('one-time');
-    setPaymentMethod('credit_card');
-    setName('');
+    setFullName('');
     setEmail('');
-    setCardNumber('');
-    setExpiry('');
-    setCvv('');
+    setPhone('');
+    setCountry('Colombia');
+    setCity('Medellín');
+    setMessage('');
+    setErrorMessage(null);
     setCompletedDonation(null);
   };
 
@@ -113,351 +152,305 @@ export default function DonationModal({ isOpen, onClose }: DonationModalProps) {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto" id="donation-modal-root">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={handleClose}
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
+          className="fixed inset-0 bg-slate-950/75 backdrop-blur-md transition-opacity"
           id="donation-backdrop"
         />
 
-        {/* Modal Container */}
+        {/* Modal Window Container */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          initial={{ opacity: 0, scale: 0.96, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ type: 'spring', duration: 0.5 }}
-          className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl z-10 border border-slate-100"
-          id="donation-modal-content"
+          exit={{ opacity: 0, scale: 0.96, y: 16 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          className="relative w-full max-w-2xl overflow-hidden rounded-3xl bg-white shadow-2xl z-10 border border-slate-200/80 my-auto"
+          id="donation-modal-window"
         >
-          {/* Header */}
-          <div className="bg-brand-dark p-6 text-white flex justify-between items-center relative">
-            <div className="flex items-center gap-3">
-              <div className="bg-brand-red p-2 rounded-full text-white animate-pulse">
-                <Heart className="w-6 h-6 fill-white" />
-              </div>
-              <div>
-                <h3 className="font-display font-bold text-xl tracking-tight">Canal de Solidaridad</h3>
-                <p className="text-xs text-sky-200">Apoya la paz y los derechos humanos en Medellín</p>
-              </div>
-            </div>
-            <button
-              id="close-donation-btn"
-              onClick={handleClose}
-              className="p-1 rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-colors"
-            >
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-
-          <div className="max-h-[75vh] overflow-y-auto p-6">
-            {!completedDonation ? (
-              <form onSubmit={handleSubmit} className="space-y-6" id="donation-form">
-                {/* 1. Frequency Selector */}
+          {/* HEADER BRANDING */}
+          <div className="bg-slate-900 text-white p-5 sm:p-6 relative overflow-hidden">
+            <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-sky-500/10 rounded-full blur-2xl pointer-events-none" />
+            
+            <div className="flex justify-between items-start gap-4 relative z-10">
+              <div className="flex items-center gap-3.5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                    Frecuencia de la Donación
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      id="freq-one-time-btn"
-                      type="button"
-                      onClick={() => setDonationType('one-time')}
-                      className={`py-2.5 px-4 rounded-xl font-medium text-sm transition-all border ${
-                        donationType === 'one-time'
-                          ? 'bg-sky-50 border-sky-400 text-sky-800 shadow-sm'
-                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      Una sola vez
-                    </button>
-                    <button
-                      id="freq-recurring-btn"
-                      type="button"
-                      onClick={() => setDonationType('recurring')}
-                      className={`py-2.5 px-4 rounded-xl font-medium text-sm transition-all border ${
-                        donationType === 'recurring'
-                          ? 'bg-sky-50 border-sky-400 text-sky-800 shadow-sm'
-                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      Aporte Mensual (Recurrente)
-                    </button>
-                  </div>
-                </div>
-
-                {/* 2. Amount Selector */}
-                <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                    Monto del Aporte (USD)
-                  </label>
-                  <div className="grid grid-cols-4 gap-2 mb-3">
-                    {suggestedAmounts.map((val) => (
-                      <button
-                        id={`amt-${val}-btn`}
-                        key={val}
-                        type="button"
-                        onClick={() => handleAmountSelect(val)}
-                        className={`py-3 px-2 rounded-xl font-bold text-lg transition-all border ${
-                          amount === val && !isCustom
-                            ? 'bg-brand-red border-brand-red text-white shadow-md shadow-red-200'
-                            : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
-                        }`}
-                      >
-                        ${val}
-                      </button>
-                    ))}
-                  </div>
-                  
-                  {/* Custom Amount */}
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
-                    <input
-                      id="custom-amount-input"
-                      type="number"
-                      placeholder="Otro valor (Monto personalizado USD)"
-                      value={customAmount}
-                      onChange={handleCustomChange}
-                      className={`w-full pl-8 pr-12 py-3 rounded-xl border font-semibold text-base focus:outline-none transition-all ${
-                        isCustom
-                          ? 'border-brand-red ring-2 ring-red-100 bg-white text-brand-dark'
-                          : 'border-slate-200 bg-slate-50 text-slate-600 focus:border-slate-300'
-                      }`}
-                      min="5"
-                    />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400">
-                      USD
+                  <div className="flex items-center gap-2">
+                    <span className="bg-sky-500/20 text-sky-300 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border border-sky-400/30">
+                      Canal Institucional de Donaciones
+                    </span>
+                    <span className="text-emerald-400 text-[10px] font-semibold flex items-center gap-1">
+                      <Lock className="w-3 h-3" /> Cuenta Oficial
                     </span>
                   </div>
-                </div>
-
-                {/* 3. Donor Information */}
-                <div className="space-y-3">
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
-                    Datos Personales
-                  </label>
-                  <div>
-                    <input
-                      id="donor-name-input"
-                      type="text"
-                      placeholder="Nombre Completo (Opcional)"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-brand-primary text-sm"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      id="donor-email-input"
-                      type="email"
-                      placeholder="Correo Electrónico (Requerido para el certificado)"
-                      value={email}
-                      required
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-brand-primary text-sm"
-                    />
-                  </div>
-                </div>
-
-                {/* 4. Payment Method Tab */}
-                <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                    Método de Pago
-                  </label>
-                  <div className="grid grid-cols-2 gap-2 mb-4">
-                    <button
-                      id="pay-cc-btn"
-                      type="button"
-                      onClick={() => setPaymentMethod('credit_card')}
-                      className={`py-2 px-3 rounded-xl flex items-center justify-center gap-2 text-sm font-medium transition-all border ${
-                        paymentMethod === 'credit_card'
-                          ? 'bg-slate-900 border-slate-900 text-white shadow-sm'
-                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      <CreditCard className="w-4 h-4" />
-                      Tarjeta de Crédito
-                    </button>
-                    <button
-                      id="pay-paypal-btn"
-                      type="button"
-                      onClick={() => setPaymentMethod('paypal')}
-                      className={`py-2 px-3 rounded-xl flex items-center justify-center gap-2 text-sm font-medium transition-all border ${
-                        paymentMethod === 'paypal'
-                          ? 'bg-amber-500 border-amber-500 text-white shadow-sm'
-                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      <span className="font-extrabold italic text-sky-950 font-sans text-xs">Pay<span className="text-sky-800">Pal</span></span>
-                    </button>
-                  </div>
-
-                  {paymentMethod === 'credit_card' ? (
-                    <div className="bg-slate-50 p-4 rounded-xl space-y-3 border border-slate-100">
-                      <div>
-                        <input
-                          id="card-number-input"
-                          type="text"
-                          placeholder="Número de Tarjeta"
-                          value={cardNumber}
-                          onChange={(e) => setCardNumber(e.target.value)}
-                          className="w-full px-4 py-2 bg-white rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-slate-400 text-sm font-mono"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <input
-                          id="card-expiry-input"
-                          type="text"
-                          placeholder="MM/AA"
-                          value={expiry}
-                          onChange={(e) => setExpiry(e.target.value)}
-                          className="w-full px-4 py-2 bg-white rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-slate-400 text-sm font-mono text-center"
-                        />
-                        <input
-                          id="card-cvv-input"
-                          type="password"
-                          placeholder="CVC / CVV"
-                          value={cvv}
-                          maxLength={4}
-                          onChange={(e) => setCvv(e.target.value)}
-                          className="w-full px-4 py-2 bg-white rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-slate-400 text-sm font-mono text-center"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="bg-amber-50/50 p-4 rounded-xl border border-amber-100 flex flex-col items-center justify-center text-center py-6">
-                      <p className="text-xs text-amber-900 max-w-xs leading-relaxed mb-3">
-                        Serás redirigido al portal seguro de PayPal para completar tu transacción de forma internacional.
-                      </p>
-                      <div className="bg-white px-6 py-2 rounded-full border border-amber-200 flex items-center gap-1.5 shadow-xs">
-                        <span className="text-xs text-slate-400 font-medium">Pago Express:</span>
-                        <span className="font-extrabold italic text-sky-950 font-sans text-sm">Pay<span className="text-sky-800">Pal</span></span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Safety & Trust info */}
-                <div className="flex items-start gap-2.5 text-xs text-slate-500 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-                  <Shield className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
-                  <p className="leading-normal">
-                    <span className="font-semibold text-slate-700">Donación segura cifrada.</span> Al donar, apoyas el sostenimiento administrativo y los materiales pedagógicos para la defensa de derechos en la Comuna 15 Guayabal, Medellín.
+                  <h2 className="font-display font-extrabold text-xl sm:text-2xl text-white tracking-tight mt-1">
+                    Apoya la Paz y los Derechos Humanos
+                  </h2>
+                  <p className="text-xs text-slate-300 mt-0.5">
+                    Fundación Fundelibertad • Nit: 900.497.212-2
                   </p>
                 </div>
+              </div>
 
-                {/* Submit button */}
-                <button
-                  id="submit-donation-btn"
-                  type="submit"
-                  disabled={isSubmitting || amount <= 0}
-                  className="w-full py-3.5 bg-brand-red text-white font-bold rounded-xl shadow-lg shadow-red-200 hover:bg-red-700 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      Procesando Aporte...
-                    </>
-                  ) : (
-                    <>
-                      <Heart className="w-5 h-5 fill-white" />
-                      Realizar Donación de ${amount} USD
-                    </>
-                  )}
-                </button>
+              <button
+                id="close-donation-modal-btn"
+                onClick={handleClose}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-all cursor-pointer shrink-0"
+                aria-label="Cerrar modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* MAIN MODAL BODY */}
+          <div className="max-h-[75vh] overflow-y-auto p-5 sm:p-7 space-y-6">
+            {!completedDonation ? (
+              <form onSubmit={handleDonationSubmit} className="space-y-6" id="donation-active-form">
+                
+                {/* BLOQUE ÚNICO: DATOS DEL DONANTE */}
+                <div className="space-y-3.5">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-widest">
+                      Datos del Donante
+                    </label>
+                    <span className="text-[11px] text-slate-400">Paso 1 de 2: Información de contacto</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <input
+                        id="donor-fullname-field"
+                        type="text"
+                        placeholder="Nombre Completo *"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-sky-500 text-xs sm:text-sm text-slate-900 bg-white font-medium"
+                      />
+                    </div>
+                    <div>
+                      <input
+                        id="donor-email-field"
+                        type="email"
+                        placeholder="Correo Electrónico *"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-sky-500 text-xs sm:text-sm text-slate-900 bg-white font-medium"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <input
+                        id="donor-phone-field"
+                        type="tel"
+                        placeholder="Teléfono / WhatsApp"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-sky-500 text-xs sm:text-sm text-slate-900 bg-white"
+                      />
+                    </div>
+                    <div>
+                      <select
+                        id="donor-country-field"
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-sky-500 text-xs sm:text-sm text-slate-900 bg-white font-medium"
+                      >
+                        {COUNTRIES_LIST.map(c => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <input
+                        id="donor-city-field"
+                        type="text"
+                        placeholder="Ciudad"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-sky-500 text-xs sm:text-sm text-slate-900 bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <textarea
+                      id="donor-message-field"
+                      placeholder="Mensaje de apoyo o dedicatoria (Opcional)"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      rows={2}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-sky-500 text-xs sm:text-sm text-slate-900 bg-white resize-none"
+                    />
+                  </div>
+
+                  {/* Checkboxes */}
+                  <div className="space-y-2 pt-1 text-xs text-slate-600 font-sans">
+                    <label className="flex items-center gap-2.5 cursor-pointer">
+                      <input
+                        id="chk-receive-news"
+                        type="checkbox"
+                        checked={receiveNews}
+                        onChange={(e) => setReceiveNews(e.target.checked)}
+                        className="w-4 h-4 rounded text-sky-600 focus:ring-sky-500 border-slate-300"
+                      />
+                      <span>Deseo recibir noticias e informes periódicos de la Fundación.</span>
+                    </label>
+
+                    <label className="flex items-center gap-2.5 cursor-pointer">
+                      <input
+                        id="chk-accept-privacy"
+                        type="checkbox"
+                        checked={acceptPrivacy}
+                        onChange={(e) => setAcceptPrivacy(e.target.checked)}
+                        className="w-4 h-4 rounded text-sky-600 focus:ring-sky-500 border-slate-300"
+                      />
+                      <span>
+                        Acepto la <a href="/contacto" target="_blank" className="text-sky-700 underline font-semibold">Política de Privacidad</a> y tratamiento de datos personales.
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* BLOQUE CÓDIGO QR Y DATOS BANCARIOS */}
+                <div className="pt-3 border-t border-slate-100 space-y-4" id="donation-qr-code-section">
+                  <div className="text-center space-y-1">
+                    <span className="bg-sky-100 text-sky-900 text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                      <QrCode className="w-3.5 h-3.5 text-sky-700" /> CÓDIGO QR Y TRANSFERENCIA DIRECTA
+                    </span>
+                    <h3 className="font-display font-extrabold text-base sm:text-lg text-slate-900">
+                      Escanea y Realiza tu Aporte
+                    </h3>
+                    <p className="text-xs text-slate-500 max-w-md mx-auto">
+                      Puedes realizar tu donación mediante tu aplicación bancaria (Nequi, Bancolombia, Daviplata o Transfiya) escaneando el código QR institucional.
+                    </p>
+                  </div>
+
+                  {/* QR DISPLAY CARD - CENTERED */}
+                  <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950 p-6 rounded-3xl text-white shadow-xl border border-slate-800 flex flex-col items-center justify-center text-center">
+                    
+                    {/* SVG GENERATED QR CODE CONTAINER */}
+                    <div className="relative bg-white p-5 rounded-2xl shadow-lg shrink-0 flex flex-col items-center justify-center border-4 border-slate-800">
+                      {/* Corner Accents */}
+                      <div className="w-4 h-4 border-t-2 border-l-2 border-sky-500 absolute -top-2 -left-2" />
+                      <div className="w-4 h-4 border-t-2 border-r-2 border-sky-500 absolute -top-2 -right-2" />
+                      <div className="w-4 h-4 border-b-2 border-l-2 border-sky-500 absolute -bottom-2 -left-2" />
+                      <div className="w-4 h-4 border-b-2 border-r-2 border-sky-500 absolute -bottom-2 -right-2" />
+
+                      {/* Image QR Code */}
+                      <img 
+                        src="https://lh3.googleusercontent.com/d/1PNcF0uNgCOHdHMeRHLYVO8KjRg7qoNzA" 
+                        alt="Código QR de Donación" 
+                        className="w-56 h-56 sm:w-64 sm:h-64 object-contain rounded-lg"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* ERROR ALERT */}
+                {errorMessage && (
+                  <div className="p-3.5 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2.5 text-xs text-red-700 font-medium">
+                    <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
+
+                {/* TRUST & SECURITY BANNER */}
+                <div className="flex items-start gap-2.5 text-[11px] text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <p className="leading-snug">
+                    <strong className="text-slate-700">Garantía de Transparencia:</strong> Escanea el código QR desde tu aplicación bancaria preferida para realizar tu aporte directo a la Fundación Fundelibertad.
+                  </p>
+                </div>
               </form>
             ) : (
-              /* Success Certificate State */
+              /* SUCCESS CERTIFICATE VIEW */
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-6 px-2 space-y-6"
-                id="donation-success-panel"
+                className="text-center py-4 sm:py-6 space-y-6"
+                id="donation-success-certificate-view"
               >
                 <div className="flex justify-center">
-                  <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center border border-emerald-100 text-brand-green">
-                    <CheckCircle2 className="w-10 h-10" />
+                  <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center border-2 border-emerald-200 text-emerald-600 shadow-md">
+                    <CheckCircle2 className="w-12 h-12" />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <h4 className="font-display font-extrabold text-2xl text-slate-900 tracking-tight">
-                    ¡Gracias por tu Solidaridad!
-                  </h4>
-                  <p className="text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
-                    Hemos recibido con gratitud tu aporte para FUNDELIBERTAD. Tu generosidad impulsa la defensa de los derechos humanos y la vida en Medellín.
+                  <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">
+                    Aporte Registrado Con Éxito
+                  </span>
+                  <h3 className="font-display font-black text-2xl sm:text-3xl text-slate-900 tracking-tight">
+                    ¡Infinitas Gracias, {completedDonation.name}!
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+                    Tu valioso aporte impulsa la paz, la formación jurídica y los derechos humanos en la Comuna 15 de Medellín.
                   </p>
                 </div>
 
-                {/* Certificate Layout */}
-                <div className="bg-gradient-to-br from-sky-50/50 to-emerald-50/30 p-6 rounded-2xl border border-sky-100/80 text-left relative overflow-hidden shadow-xs">
-                  <div className="absolute right-3 top-3 opacity-10">
-                    <Sparkles className="w-24 h-24 text-brand-primary" />
-                  </div>
-                  
-                  <div className="text-center border-b border-sky-100 pb-3 mb-4">
-                    <span className="font-display font-black text-xs text-slate-400 uppercase tracking-widest">
-                      Certificado de Donación
-                    </span>
-                    <h5 className="font-display font-bold text-sm text-slate-800">
-                      FUNDELIBERTAD COLOMBIA
-                    </h5>
-                    <p className="text-[10px] text-slate-400">Nit: 900.541.211-5 | Medellín</p>
+                {/* CERTIFICATE RECEIPT */}
+                <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-3xl text-left relative overflow-hidden shadow-xl border border-slate-700">
+                  <div className="border-b border-slate-700/80 pb-3 mb-4 flex justify-between items-center">
+                    <div>
+                      <p className="text-[10px] text-sky-400 font-bold uppercase tracking-widest">CERTIFICADO DIGITAL DE DONACIÓN</p>
+                      <p className="font-bold text-sm text-white">Fundación Fundelibertad Colombia</p>
+                    </div>
+                    <span className="text-[10px] text-slate-400">Nit: 900.497.212-2</span>
                   </div>
 
-                  <div className="space-y-2.5 text-xs text-slate-700 font-sans">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Referencia:</span>
-                      <span className="font-mono font-semibold text-slate-900">{completedDonation.id}</span>
+                  <div className="grid grid-cols-2 gap-3 text-xs text-slate-300 font-sans">
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">ID Registro:</span>
+                      <strong className="font-mono text-white text-xs">{completedDonation.id}</strong>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Donante:</span>
-                      <span className="font-semibold text-slate-900">{completedDonation.name}</span>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Método:</span>
+                      <strong className="text-emerald-400 text-xs font-black">Transferencia / Código QR</strong>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Contacto:</span>
-                      <span className="font-semibold text-slate-900">{completedDonation.email}</span>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Donante:</span>
+                      <strong className="text-white">{completedDonation.name}</strong>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Monto Aportado:</span>
-                      <span className="font-bold text-slate-900">${completedDonation.amount} USD</span>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Correo:</span>
+                      <strong className="text-white truncate block">{completedDonation.email}</strong>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Frecuencia:</span>
-                      <span className="capitalize font-semibold text-sky-700">
-                        {completedDonation.type === 'one-time' ? 'Único Aporte' : 'Aporte Mensual'}
-                      </span>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Ubicación:</span>
+                      <strong className="text-sky-300">{completedDonation.city || 'Medellín'}, {completedDonation.country || 'Colombia'}</strong>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Fecha:</span>
-                      <span className="font-semibold text-slate-900">{completedDonation.date}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Estado:</span>
-                      <span className="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                        Aprobado
-                      </span>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">Fecha:</span>
+                      <strong className="text-white">{completedDonation.date}</strong>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <button
-                    id="donation-modal-done-btn"
+                    id="finish-modal-btn"
                     onClick={handleClose}
-                    className="flex-1 py-3 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl text-sm transition-all shadow-sm cursor-pointer"
+                    className="flex-1 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer"
                   >
-                    Entendido
+                    Entendido / Cerrar
                   </button>
                   <button
-                    id="print-certificate-btn"
+                    id="print-cert-btn"
                     onClick={() => window.print()}
-                    className="py-3 px-4 bg-sky-100 hover:bg-sky-200 text-sky-800 font-medium rounded-xl text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="py-3.5 px-6 bg-sky-100 hover:bg-sky-200 text-sky-900 font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
-                    Imprimir
+                    Imprimir Comprobante
                   </button>
                 </div>
               </motion.div>

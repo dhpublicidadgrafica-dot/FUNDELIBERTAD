@@ -5,14 +5,40 @@
 
 export interface Donation {
   id: string;
+  orderId?: string;
   amount: number;
   currency: string;
   email: string;
   name: string;
+  phone?: string;
+  country?: string;
+  city?: string;
+  message?: string;
+  receiveNews?: boolean;
   date: string;
   type: 'one-time' | 'recurring';
-  paymentMethod: 'paypal' | 'credit_card';
-  status: 'completed' | 'pending';
+  paymentMethod: 'credit_card' | 'paypal' | 'bank_transfer';
+  status: 'completed' | 'pending' | 'denied' | 'refunded';
+  ip?: string;
+}
+
+export interface DonationStats {
+  totalRaised: number;
+  goal: number;
+  totalDonationsCount: number;
+  averageDonation: number;
+  recentDonors: Donation[];
+  monthlyData: { month: string; amount: number; count: number }[];
+  annualData: { year: string; amount: number; count: number }[];
+}
+
+export interface DonationFilter {
+  searchQuery?: string;
+  frequency?: 'all' | 'one-time' | 'recurring';
+  paymentMethod?: 'all' | 'paypal' | 'credit_card';
+  status?: 'all' | 'completed' | 'pending' | 'denied' | 'refunded';
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface InternshipApplication {

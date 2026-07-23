@@ -68,6 +68,12 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (location.pathname === '/donar') {
+      setIsDonationOpen(true);
+    }
+  }, [location.pathname]);
+
   const handlePageChange = (page: string, subSection?: string) => {
     if (page === 'home') navigate('/');
     else if (page === 'about') navigate('/nosotros');
@@ -76,6 +82,10 @@ export default function App() {
     else if (page === 'activities') navigate('/actividades');
     else if (page === 'contact') navigate('/contacto');
     else if (page === 'dashboard') navigate('/panel-control');
+    else if (page === 'donate') {
+      setIsDonationOpen(true);
+      navigate('/donar');
+    }
     else if (page === 'programs') {
       if (subSection === 'reports') navigate('/programas/informes-denuncias-ddhh');
       else if (subSection === 'legal') navigate('/programas/asesoria-juridica-comunitaria');

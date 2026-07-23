@@ -38,7 +38,7 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
         {/* Background Image with elegant overlay */}
         <div className="absolute inset-0 z-0">
           <img
-            src={heroImageSrc}
+            src="https://lh3.googleusercontent.com/d/1PNcF0uNgCOHdHMeRHLYVO8KjRg7qoNzA"
             alt="FUNDELIBERTAD Paz y Derechos Humanos en Colombia"
             className="w-full h-full object-cover object-center opacity-30 scale-102"
             referrerPolicy="no-referrer"
@@ -398,7 +398,7 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
               onClick={onDonateClick}
               className="w-full sm:w-auto px-8 py-3.5 bg-white hover:bg-slate-50 text-brand-red font-extrabold rounded-xl text-sm transition-all shadow-md hover:shadow-lg cursor-pointer"
             >
-              Donar Ahora (PayPal / Tarjeta)
+              Donar Ahora (Código QR / Transferencia)
             </button>
           </div>
         </div>
