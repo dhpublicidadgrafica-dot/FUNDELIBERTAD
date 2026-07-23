@@ -4,14 +4,15 @@
  */
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Heart, ArrowRight, CheckCircle2, Instagram, Facebook, Youtube, Share2 } from 'lucide-react';
 
 interface FooterProps {
-  onPageChange: (page: string, subSection?: string) => void;
+  onPageChange?: (page: string, subSection?: string) => void;
   onDonateClick: () => void;
 }
 
-export default function Footer({ onPageChange, onDonateClick }: FooterProps) {
+export default function Footer({ onDonateClick }: FooterProps) {
   return (
     <footer className="bg-slate-900 text-slate-300 font-sans border-t border-slate-800" id="main-footer">
       {/* Main Footer Links */}
@@ -86,29 +87,29 @@ export default function Footer({ onPageChange, onDonateClick }: FooterProps) {
           </h5>
           <ul className="space-y-2.5 text-xs text-slate-400" id="footer-links-quick">
             <li>
-              <button onClick={() => onPageChange('home')} className="hover:text-white hover:underline transition-all cursor-pointer">
+              <Link to="/" className="hover:text-white hover:underline transition-all cursor-pointer">
                 Inicio / Impacto
-              </button>
+              </Link>
             </li>
             <li>
-              <button onClick={() => onPageChange('about')} className="hover:text-white hover:underline transition-all cursor-pointer">
+              <Link to="/nosotros" className="hover:text-white hover:underline transition-all cursor-pointer">
                 Nuestra Historia y Valores
-              </button>
+              </Link>
             </li>
             <li>
-              <button onClick={() => onPageChange('services')} className="hover:text-white hover:underline transition-all cursor-pointer">
+              <Link to="/servicios" className="hover:text-white hover:underline transition-all cursor-pointer">
                 Asesorías Gratuitas (19 áreas)
-              </button>
+              </Link>
             </li>
             <li>
-              <button onClick={() => onPageChange('projects')} className="hover:text-white hover:underline transition-all cursor-pointer">
+              <Link to="/proyectos" className="hover:text-white hover:underline transition-all cursor-pointer">
                 Proyectos Sociales en Comuna 15
-              </button>
+              </Link>
             </li>
             <li>
-              <button onClick={() => onPageChange('activities')} className="hover:text-white hover:underline transition-all cursor-pointer">
+              <Link to="/actividades" className="hover:text-white hover:underline transition-all cursor-pointer">
                 Noticias y Actividades Recientes
-              </button>
+              </Link>
             </li>
           </ul>
         </div>
@@ -120,24 +121,24 @@ export default function Footer({ onPageChange, onDonateClick }: FooterProps) {
           </h5>
           <ul className="space-y-2.5 text-xs text-slate-400" id="footer-links-programs">
             <li>
-              <button onClick={() => onPageChange('programs', 'internships')} className="hover:text-white hover:underline transition-all cursor-pointer">
+              <Link to="/programas/practicas-pasantias" className="hover:text-white hover:underline transition-all cursor-pointer">
                 Postulación a Prácticas y Pasantías
-              </button>
+              </Link>
             </li>
             <li>
-              <button onClick={() => onPageChange('programs', 'reports')} className="hover:text-white hover:underline transition-all cursor-pointer">
+              <Link to="/programas/informes-denuncias-ddhh" className="hover:text-white hover:underline transition-all cursor-pointer">
                 Reportar Vulneración de DDHH (Confidencial)
-              </button>
+              </Link>
             </li>
             <li>
-              <button onClick={() => onPageChange('programs', 'legal')} className="hover:text-white hover:underline transition-all cursor-pointer">
+              <Link to="/programas/asesoria-juridica-comunitaria" className="hover:text-white hover:underline transition-all cursor-pointer">
                 Solicitud de Asesoría Legal Gratuita
-              </button>
+              </Link>
             </li>
             <li>
-              <button onClick={() => onPageChange('dashboard')} className="hover:text-white hover:underline transition-all cursor-pointer font-semibold text-sky-400">
+              <Link to="/panel-control" className="hover:text-white hover:underline transition-all cursor-pointer font-semibold text-sky-400">
                 Portal de Seguimiento Ciudadano
-              </button>
+              </Link>
             </li>
           </ul>
         </div>

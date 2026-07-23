@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   GraduationCap, AlertTriangle, Scale, 
@@ -18,13 +19,54 @@ interface ProgramSectionsProps {
   initialSubsection?: string;
 }
 
-export default function ProgramSections({ initialSubsection = 'internships' }: ProgramSectionsProps) {
-  const [activeTab, setActiveTab] = useState<string>(initialSubsection);
+const SUBSECTION_MAP: Record<string, string> = {
+  'internships': 'internships',
+  'practicas-pasantias': 'internships',
+  'practicas': 'internships',
+  'pasantias': 'internships',
+  'reports': 'reports',
+  'informes-denuncias-ddhh': 'reports',
+  'informes-denuncias': 'reports',
+  'denuncias': 'reports',
+  'legal': 'legal',
+  'asesoria-juridica-comunitaria': 'legal',
+  'asesoria-juridica': 'legal',
+  'asesoria-legal': 'legal'
+};
 
-  // Sync state if initialSubsection prop changes
+const TAB_URL_MAP: Record<string, string> = {
+  'internships': '/programas/practicas-pasantias',
+  'reports': '/programas/informes-denuncias-ddhh',
+  'legal': '/programas/asesoria-juridica-comunitaria',
+};
+
+export default function ProgramSections({ initialSubsection = 'internships' }: ProgramSectionsProps) {
+  const { subsection } = useParams<{ subsection?: string }>();
+  const navigate = useNavigate();
+
+  const resolveTab = () => {
+    if (subsection && SUBSECTION_MAP[subsection]) {
+      return SUBSECTION_MAP[subsection];
+    }
+    return initialSubsection;
+  };
+
+  const [activeTab, setActiveTab] = useState<string>(resolveTab());
+
   useEffect(() => {
-    setActiveTab(initialSubsection);
-  }, [initialSubsection]);
+    if (subsection && SUBSECTION_MAP[subsection]) {
+      setActiveTab(SUBSECTION_MAP[subsection]);
+    } else {
+      setActiveTab(initialSubsection);
+    }
+  }, [subsection, initialSubsection]);
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+    if (TAB_URL_MAP[tab]) {
+      navigate(TAB_URL_MAP[tab]);
+    }
+  };
 
   // Images generated previously
 
@@ -40,7 +82,7 @@ export default function ProgramSections({ initialSubsection = 'internships' }: P
         <div className="flex flex-col gap-2">
           <button
             id="prog-tab-internships-btn"
-            onClick={() => { setActiveTab('internships'); }}
+            onClick={() => handleTabClick('internships')}
             className={`px-5 py-4 rounded-xl text-xs font-bold transition-all text-left flex items-center justify-between border cursor-pointer ${
               activeTab === 'internships'
                 ? 'bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-100'
@@ -56,7 +98,7 @@ export default function ProgramSections({ initialSubsection = 'internships' }: P
 
           <button
             id="prog-tab-reports-btn"
-            onClick={() => { setActiveTab('reports'); }}
+            onClick={() => handleTabClick('reports')}
             className={`px-5 py-4 rounded-xl text-xs font-bold transition-all text-left flex items-center justify-between border cursor-pointer ${
               activeTab === 'reports'
                 ? 'bg-amber-600 border-amber-600 text-white shadow-md shadow-amber-100'
@@ -72,7 +114,7 @@ export default function ProgramSections({ initialSubsection = 'internships' }: P
 
           <button
             id="prog-tab-legal-btn"
-            onClick={() => { setActiveTab('legal'); }}
+            onClick={() => handleTabClick('legal')}
             className={`px-5 py-4 rounded-xl text-xs font-bold transition-all text-left flex items-center justify-between border cursor-pointer ${
               activeTab === 'legal'
                 ? 'bg-emerald-700 border-emerald-700 text-white shadow-md shadow-emerald-100'

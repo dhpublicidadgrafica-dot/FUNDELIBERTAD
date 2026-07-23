@@ -4,53 +4,53 @@
  */
 
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ChevronDown, Heart, Scale, Users, FileWarning, Eye, GraduationCap, Calendar, PhoneCall, LayoutDashboard } from 'lucide-react';
+import { Menu, X, ChevronDown, Heart, Scale, FileWarning, GraduationCap } from 'lucide-react';
 
 interface HeaderProps {
-  currentPage: string;
-  onPageChange: (page: string, subSection?: string) => void;
+  currentPage?: string;
+  onPageChange?: (page: string, subSection?: string) => void;
   onDonateClick: () => void;
-  submissionsCount: number;
+  submissionsCount?: number;
 }
 
-export default function Header({ currentPage, onPageChange, onDonateClick, submissionsCount }: HeaderProps) {
+export default function Header({ onDonateClick }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const location = useLocation();
 
   const menuItems = [
-    { label: 'Inicio', id: 'home' },
-    { label: 'Nosotros', id: 'about' },
-    { label: 'Servicios', id: 'services' },
-    { label: 'Proyectos', id: 'projects' },
+    { label: 'Inicio', path: '/', id: 'home' },
+    { label: 'Nosotros', path: '/nosotros', id: 'about' },
+    { label: 'Servicios', path: '/servicios', id: 'services' },
+    { label: 'Proyectos', path: '/proyectos', id: 'projects' },
   ];
 
   const programSubsections = [
-    { label: 'Prácticas y Pasantías', id: 'internships', icon: GraduationCap, color: 'text-blue-600' },
-    { label: 'Informes y Denuncias de DDHH', id: 'reports', icon: FileWarning, color: 'text-amber-600' },
-    { label: 'Asesoría Jurídica Comunitaria', id: 'legal', icon: Scale, color: 'text-emerald-600' },
+    { label: 'Prácticas y Pasantías', path: '/programas/practicas-pasantias', id: 'internships', icon: GraduationCap, color: 'text-blue-600' },
+    { label: 'Informes y Denuncias de DDHH', path: '/programas/informes-denuncias-ddhh', id: 'reports', icon: FileWarning, color: 'text-amber-600' },
+    { label: 'Asesoría Jurídica Comunitaria', path: '/programas/asesoria-juridica-comunitaria', id: 'legal', icon: Scale, color: 'text-emerald-600' },
   ];
 
-  const handleSubPageClick = (sub: string) => {
-    onPageChange('programs', sub);
-    setIsDropdownOpen(false);
-    setIsOpen(false);
+  const isCurrentPath = (path: string) => {
+    if (path === '/') return location.pathname === '/' || location.pathname === '/inicio';
+    return location.pathname === path || location.pathname.startsWith(path);
   };
 
-  const handlePageClick = (page: string) => {
-    onPageChange(page);
-    setIsDropdownOpen(false);
-    setIsOpen(false);
-  };
+  const isProgramsActive = location.pathname.startsWith('/programas') ||
+    location.pathname === '/practicas-pasantias' ||
+    location.pathname === '/informes-denuncias-ddhh' ||
+    location.pathname === '/asesoria-juridica-comunitaria';
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-sky-100" id="main-header">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo Brand */}
-          <div 
+          <Link 
+            to="/"
             id="brand-logo-container"
-            onClick={() => handlePageClick('home')}
             className="cursor-pointer select-none group flex items-center"
           >
             <img 
@@ -60,23 +60,23 @@ export default function Header({ currentPage, onPageChange, onDonateClick, submi
               referrerPolicy="no-referrer"
               id="header-logo-image"
             />
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1.5" id="desktop-nav">
             {menuItems.map((item) => (
-              <button
+              <Link
                 id={`nav-${item.id}-btn`}
                 key={item.id}
-                onClick={() => handlePageClick(item.id)}
+                to={item.path}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                  currentPage === item.id
+                  isCurrentPath(item.path)
                     ? 'bg-sky-50 text-brand-primary font-semibold'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
 
             {/* Programs Dropdown */}
@@ -89,7 +89,7 @@ export default function Header({ currentPage, onPageChange, onDonateClick, submi
               <button
                 id="nav-programs-btn"
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
-                  currentPage === 'programs'
+                  isProgramsActive
                     ? 'bg-sky-50 text-brand-primary font-semibold'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
@@ -111,10 +111,11 @@ export default function Header({ currentPage, onPageChange, onDonateClick, submi
                     {programSubsections.map((sub) => {
                       const Icon = sub.icon;
                       return (
-                        <button
+                        <Link
                           id={`nav-sub-${sub.id}-btn`}
                           key={sub.id}
-                          onClick={() => handleSubPageClick(sub.id)}
+                          to={sub.path}
+                          onClick={() => setIsDropdownOpen(false)}
                           className="w-full flex items-start gap-3 p-3 rounded-lg hover:bg-sky-50/50 text-left transition-colors cursor-pointer group"
                         >
                           <div className={`p-1.5 rounded-lg bg-slate-50 group-hover:bg-white group-hover:shadow-xs transition-colors shrink-0 ${sub.color}`}>
@@ -124,7 +125,7 @@ export default function Header({ currentPage, onPageChange, onDonateClick, submi
                             <p className="text-xs font-bold text-slate-900 leading-normal">{sub.label}</p>
                             <p className="text-[10px] text-slate-400 mt-0.5 leading-normal">Formularios de postulación y registro</p>
                           </div>
-                        </button>
+                        </Link>
                       );
                     })}
                   </motion.div>
@@ -132,29 +133,29 @@ export default function Header({ currentPage, onPageChange, onDonateClick, submi
               </AnimatePresence>
             </div>
 
-            <button
+            <Link
               id="nav-activities-btn"
-              onClick={() => handlePageClick('activities')}
+              to="/actividades"
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                currentPage === 'activities'
+                isCurrentPath('/actividades')
                   ? 'bg-sky-50 text-brand-primary font-semibold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               Actividades
-            </button>
+            </Link>
 
-            <button
+            <Link
               id="nav-contact-btn"
-              onClick={() => handlePageClick('contact')}
+              to="/contacto"
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                currentPage === 'contact'
+                isCurrentPath('/contacto')
                   ? 'bg-sky-50 text-brand-primary font-semibold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               Contacto
-            </button>
+            </Link>
 
           </nav>
 
@@ -195,18 +196,19 @@ export default function Header({ currentPage, onPageChange, onDonateClick, submi
           >
             <div className="px-4 pt-2 pb-6 space-y-1.5 text-slate-800">
               {menuItems.map((item) => (
-                <button
+                <Link
                   id={`mobile-nav-${item.id}-btn`}
                   key={item.id}
-                  onClick={() => handlePageClick(item.id)}
-                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-colors ${
-                    currentPage === item.id
+                  to={item.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`block w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                    isCurrentPath(item.path)
                       ? 'bg-sky-50 text-brand-primary font-bold'
                       : 'hover:bg-slate-50'
                   }`}
                 >
                   {item.label}
-                </button>
+                </Link>
               ))}
 
               {/* Programs list for mobile */}
@@ -217,38 +219,41 @@ export default function Header({ currentPage, onPageChange, onDonateClick, submi
                 {programSubsections.map((sub) => {
                   const Icon = sub.icon;
                   return (
-                    <button
+                    <Link
                       id={`mobile-sub-nav-${sub.id}-btn`}
                       key={sub.id}
-                      onClick={() => handleSubPageClick(sub.id)}
+                      to={sub.path}
+                      onClick={() => setIsOpen(false)}
                       className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-slate-50 text-left text-sm"
                     >
                       <Icon className={`w-4 h-4 shrink-0 ${sub.color}`} />
                       <span className="font-medium text-slate-700">{sub.label}</span>
-                    </button>
+                    </Link>
                   );
                 })}
               </div>
 
               <div className="border-t border-slate-100 pt-2 mt-2 space-y-1">
-                <button
+                <Link
                   id="mobile-nav-activities-btn"
-                  onClick={() => handlePageClick('activities')}
-                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-colors ${
-                    currentPage === 'activities' ? 'bg-sky-50 text-brand-primary font-bold' : 'hover:bg-slate-50'
+                  to="/actividades"
+                  onClick={() => setIsOpen(false)}
+                  className={`block w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                    isCurrentPath('/actividades') ? 'bg-sky-50 text-brand-primary font-bold' : 'hover:bg-slate-50'
                   }`}
                 >
                   Actividades
-                </button>
-                <button
+                </Link>
+                <Link
                   id="mobile-nav-contact-btn"
-                  onClick={() => handlePageClick('contact')}
-                  className={`w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-colors ${
-                    currentPage === 'contact' ? 'bg-sky-50 text-brand-primary font-bold' : 'hover:bg-slate-50'
+                  to="/contacto"
+                  onClick={() => setIsOpen(false)}
+                  className={`block w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                    isCurrentPath('/contacto') ? 'bg-sky-50 text-brand-primary font-bold' : 'hover:bg-slate-50'
                   }`}
                 >
                   Contacto
-                </button>
+                </Link>
               </div>
 
               {/* Mobile CTA */}
