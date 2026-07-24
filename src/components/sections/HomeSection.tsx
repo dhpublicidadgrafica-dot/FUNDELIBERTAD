@@ -38,13 +38,13 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
         {/* Background Image with elegant overlay */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://lh3.googleusercontent.com/d/1PNcF0uNgCOHdHMeRHLYVO8KjRg7qoNzA"
+            src="https://lh3.googleusercontent.com/d/1mzMGHUgDdHcX8hpf8DTMLIs2Dv53CCsd"
             alt="FUNDELIBERTAD Paz y Derechos Humanos en Colombia"
-            className="w-full h-full object-cover object-center opacity-30 scale-102"
+            className="w-full h-full object-cover object-center opacity-65 scale-102"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#14324f] via-[#3B82C1]/95 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#14324f]/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#14324f]/90 via-[#3B82C1]/60 to-[#14324f]/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#14324f]/70 via-transparent to-[#14324f]/20" />
         </div>
 
         {/* Hero content */}
@@ -336,15 +336,11 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
               onClick={() => onPageChange('projects')}
             >
               <div>
-                <div className={`h-48 relative overflow-hidden flex items-center justify-center ${proj.id === 'proj-ingles' ? 'bg-white' : 'bg-slate-100'}`}>
+                <div className="h-48 relative overflow-hidden bg-slate-100">
                   <img
                     src={proj.image}
                     alt={proj.title}
-                    className={
-                      proj.id === 'proj-ingles'
-                        ? "max-w-full max-h-full object-contain"
-                        : "w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    }
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     referrerPolicy="no-referrer"
                   />
                   <span className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm text-white px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider z-10">

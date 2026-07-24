@@ -50,21 +50,15 @@ export default function ProjectsSection() {
             >
               <div className="flex flex-col h-full">
                 {/* Photo Header */}
-                <div className={`h-56 relative overflow-hidden flex items-center justify-center ${proj.id === 'proj-ingles' ? 'bg-white' : 'bg-slate-100'}`}>
+                <div className="h-56 relative overflow-hidden bg-slate-100">
                   <img
                     src={proj.image}
                     alt={proj.title}
-                    className={
-                      proj.id === 'proj-ingles'
-                        ? "max-w-full max-h-full object-contain"
-                        : "w-full h-full object-cover transition-transform duration-500 hover:scale-103"
-                    }
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-103"
                     referrerPolicy="no-referrer"
                   />
                   {/* Overlay banner */}
-                  {proj.id !== 'proj-ingles' && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <div className="absolute bottom-4 left-4 flex items-center gap-2 z-10">
                     <div className="w-8 h-8 rounded-lg bg-white/95 flex items-center justify-center">
                       {getProjectIcon(proj.iconName)}

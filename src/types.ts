@@ -17,7 +17,7 @@ export interface Donation {
   receiveNews?: boolean;
   date: string;
   type: 'one-time' | 'recurring';
-  paymentMethod: 'credit_card' | 'paypal' | 'bank_transfer';
+  paymentMethod: 'credit_card' | 'bank_transfer';
   status: 'completed' | 'pending' | 'denied' | 'refunded';
   ip?: string;
 }
@@ -35,7 +35,7 @@ export interface DonationStats {
 export interface DonationFilter {
   searchQuery?: string;
   frequency?: 'all' | 'one-time' | 'recurring';
-  paymentMethod?: 'all' | 'paypal' | 'credit_card';
+  paymentMethod?: 'all' | 'bank_transfer' | 'credit_card';
   status?: 'all' | 'completed' | 'pending' | 'denied' | 'refunded';
   startDate?: string;
   endDate?: string;
