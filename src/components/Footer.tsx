@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Heart, ArrowRight, CheckCircle2, Instagram, Facebook, Youtube, Share2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Heart, ArrowRight, CheckCircle2, Instagram, Facebook, Youtube, Share2, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
   onPageChange?: (page: string, subSection?: string) => void;
@@ -185,15 +185,29 @@ export default function Footer({ onDonateClick }: FooterProps) {
 
       {/* Notificaciones Judiciales Box */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12" id="judicial-notifications-container">
-        <div className="bg-sky-600 text-white rounded-2xl p-6 shadow-md border border-sky-500/30">
+        <div className="bg-sky-600 text-white rounded-2xl p-6 shadow-md border border-sky-500/30 flex flex-col md:flex-row md:items-center justify-between gap-5">
           <div className="space-y-2">
             <h6 className="font-sans font-extrabold text-sm uppercase tracking-wider text-white flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
               Notificaciones Judiciales
             </h6>
-            <p className="text-xs text-sky-50 leading-relaxed max-w-5xl">
+            <p className="text-xs text-sky-50 leading-relaxed max-w-4xl">
               <strong>FUNDELIBERTAD</strong>, en cumplimiento de la Ley 1712 de 2014 y en atención a su calidad de entidad sin ánimo de lucro de conformación mixta, dispuso la cuenta de correo electrónico: <a href="mailto:info@fundelibertad.org" className="underline font-bold hover:text-white transition-colors">info@fundelibertad.org</a> para la atención exclusiva de todas las notificaciones judiciales.
             </p>
+          </div>
+          <div className="shrink-0 flex items-center">
+            <a
+              id="judicial-webmail-btn"
+              href="https://webmail.fundelibertad.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-sky-700 hover:bg-sky-50 hover:text-sky-800 font-bold text-xs rounded-xl shadow-sm transition-all duration-200 font-sans cursor-pointer whitespace-nowrap"
+              title="Ingreso a Webmail Corporativo"
+            >
+              <Mail className="w-4 h-4 text-sky-600" />
+              <span>Webmail Institucional</span>
+              <ExternalLink className="w-3.5 h-3.5 text-sky-500" />
+            </a>
           </div>
         </div>
       </div>

@@ -48,11 +48,6 @@ export default function ContactSection() {
     }, 1200);
   };
 
-  const handleWhatsAppRedirect = () => {
-    const phoneNumber = '573002167822';
-    const msg = encodeURIComponent('Hola FUNDELIBERTAD, me gustaría recibir más información o solicitar asesoría.');
-    window.open(`https://wa.me/${phoneNumber}?text=${msg}`, '_blank');
-  };
 
   return (
     <div className="space-y-16 pb-16 font-sans text-left" id="contact-section-container">
@@ -173,13 +168,15 @@ export default function ContactSection() {
               <span className="text-[9px] font-black uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">En línea</span>
               <h4 className="font-display font-bold text-sm text-slate-900">Contacto Directo WhatsApp</h4>
               <p className="text-xs text-slate-500 leading-normal mb-2.5">Recibe asesoría o respuestas rápidas en tu teléfono.</p>
-              <button
+              <a
                 id="contact-whatsapp-btn"
-                onClick={handleWhatsAppRedirect}
-                className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-colors cursor-pointer flex items-center gap-1 shadow-sm"
+                href="https://wa.me/573002167822?text=Hola%20FUNDELIBERTAD%2C%20me%20gustar%C3%ADa%20recibir%20m%C3%A1s%20informaci%C3%B3n%20o%20solicitar%20asesor%C3%ADa."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-colors cursor-pointer inline-flex items-center gap-1 shadow-sm"
               >
                 Chatear +57 300 216 7822
-              </button>
+              </a>
             </div>
           </div>
 

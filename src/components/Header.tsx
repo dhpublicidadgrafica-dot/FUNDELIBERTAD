@@ -160,7 +160,7 @@ export default function Header({ onDonateClick }: HeaderProps) {
           </nav>
 
           {/* Action buttons (Donation) */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2.5">
             <button
               id="header-donate-btn"
               onClick={onDonateClick}
@@ -257,7 +257,7 @@ export default function Header({ onDonateClick }: HeaderProps) {
               </div>
 
               {/* Mobile CTA */}
-              <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
+              <div className="pt-4 border-t border-slate-100 flex flex-col gap-2.5">
                 <button
                   id="mobile-header-donate-btn"
                   onClick={() => {

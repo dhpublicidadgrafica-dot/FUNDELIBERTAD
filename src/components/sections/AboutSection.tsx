@@ -6,6 +6,7 @@
 import { motion } from 'motion/react';
 import { Target, Eye, Shield, History, Award, BookOpen, Compass, CheckCircle, Users, User, Mail } from 'lucide-react';
 import comunidadUnionImg from '../../assets/images/comunidad_union_1782499241517.jpg';
+import AdaptiveImage from '../AdaptiveImage';
 
 export default function AboutSection() {
   const values = [
@@ -40,15 +41,11 @@ export default function AboutSection() {
 
         </div>
 
-        <div className="relative rounded-2xl overflow-hidden h-[320px] bg-sky-100 border border-sky-100 shadow-xs">
-          <img
-            src={comunidadUnionImg}
-            alt="Comunidad unida - Manos en círculo sobre el césped"
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-blue-900/10" />
-        </div>
+        <AdaptiveImage
+          src={comunidadUnionImg}
+          alt="Comunidad unida - Manos en círculo sobre el césped"
+          containerClassName="relative rounded-2xl overflow-hidden h-[320px] bg-white border border-slate-200/80 shadow-xs flex items-center justify-center"
+        />
       </div>
 
       {/* History block */}

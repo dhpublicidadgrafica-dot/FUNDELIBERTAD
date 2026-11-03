@@ -12,6 +12,7 @@ import heroImageSrc from '../../assets/images/fundelibertad_hero_1782489663346.j
 import pasantiasImageSrc from '../../assets/images/pasantias_students_1782495066851.jpg';
 import denunciasImageSrc from '../../assets/images/denuncias_documento_handover_1782495219494.jpg';
 import asesoriasImageSrc from '../../assets/images/asesorias_legales_consultation_1782495362476.jpg';
+import AdaptiveImage from '../AdaptiveImage';
 
 interface HomeSectionProps {
   onPageChange: (page: string, subSection?: string) => void;
@@ -95,7 +96,7 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="flex flex-wrap gap-3.5 pt-4"
+            className="flex flex-wrap items-center gap-3.5 pt-4"
             id="hero-actions"
           >
             <button
@@ -162,17 +163,15 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
             className="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden text-left flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group"
           >
             <div>
-              <div className="h-48 sm:h-56 bg-slate-100 overflow-hidden relative">
-                <img
-                  src={pasantiasImageSrc}
-                  alt="Pasantías y Prácticas"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  referrerPolicy="no-referrer"
-                />
-                <span className="absolute top-3 left-3 bg-brand-green text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+              <AdaptiveImage
+                src={pasantiasImageSrc}
+                alt="Pasantías y Prácticas"
+                containerClassName="h-48 sm:h-56 relative overflow-hidden bg-white border-b border-slate-100 flex items-center justify-center"
+              >
+                <span className="absolute top-3 left-3 bg-brand-green text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider z-20 shadow-xs">
                   Educación y Liderazgo
                 </span>
-              </div>
+              </AdaptiveImage>
               <div className="p-6 space-y-2">
                 <h3 className="font-display font-bold text-lg text-slate-950 leading-tight group-hover:text-sky-700 transition-colors">
                   Pasantías y Prácticas
@@ -197,17 +196,15 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
             className="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden text-left flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group"
           >
             <div>
-              <div className="h-48 sm:h-56 bg-slate-100 overflow-hidden relative">
-                <img
-                  src={denunciasImageSrc}
-                  alt="Denuncias Ciudadanas"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  referrerPolicy="no-referrer"
-                />
-                <span className="absolute top-3 left-3 bg-amber-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+              <AdaptiveImage
+                src={denunciasImageSrc}
+                alt="Denuncias Ciudadanas"
+                containerClassName="h-48 sm:h-56 relative overflow-hidden bg-white border-b border-slate-100 flex items-center justify-center"
+              >
+                <span className="absolute top-3 left-3 bg-amber-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider z-20 shadow-xs">
                   Derechos Humanos
                 </span>
-              </div>
+              </AdaptiveImage>
               <div className="p-6 space-y-2">
                 <h3 className="font-display font-bold text-lg text-slate-950 leading-tight group-hover:text-amber-700 transition-colors">
                   Denuncias Ciudadanas
@@ -232,17 +229,15 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
             className="bg-white rounded-3xl border border-slate-100 shadow-xs overflow-hidden text-left flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group"
           >
             <div>
-              <div className="h-48 sm:h-56 bg-slate-100 overflow-hidden relative">
-                <img
-                  src={asesoriasImageSrc}
-                  alt="Asesorías Legales"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  referrerPolicy="no-referrer"
-                />
-                <span className="absolute top-3 left-3 bg-brand-primary text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+              <AdaptiveImage
+                src={asesoriasImageSrc}
+                alt="Asesorías Legales"
+                containerClassName="h-48 sm:h-56 relative overflow-hidden bg-white border-b border-slate-100 flex items-center justify-center"
+              >
+                <span className="absolute top-3 left-3 bg-brand-primary text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider z-20 shadow-xs">
                   Justicia y Paz
                 </span>
-              </div>
+              </AdaptiveImage>
               <div className="p-6 space-y-2">
                 <h3 className="font-display font-bold text-lg text-slate-950 leading-tight group-hover:text-blue-700 transition-colors">
                   Asesorías Legales
@@ -336,17 +331,15 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
               onClick={() => onPageChange('projects')}
             >
               <div>
-                <div className="h-48 relative overflow-hidden bg-slate-100">
-                  <img
-                    src={proj.image}
-                    alt={proj.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                  />
-                  <span className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm text-white px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider z-10">
+                <AdaptiveImage
+                  src={proj.image}
+                  alt={proj.title}
+                  containerClassName="h-48 relative overflow-hidden bg-white border-b border-slate-100 flex items-center justify-center"
+                >
+                  <span className="absolute top-3 left-3 bg-white/95 text-slate-800 border border-slate-200/80 shadow-xs px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider z-20">
                     Proyecto Activo
                   </span>
-                </div>
+                </AdaptiveImage>
                 <div className="p-6 space-y-2">
                   <h3 className="font-display font-bold text-base text-slate-900 leading-snug group-hover:text-sky-700 transition-colors">
                     {proj.title}

@@ -5,7 +5,7 @@
 
 import { Service, Project, Activity } from './types';
 import projectKungfuNewImg from './assets/images/project_kungfu_paz_new_1782507851349.jpg';
-import footballImg from './assets/images/football_social_project_1782495779357.jpg';
+import footballImg from './assets/images/futbol_social_comunitario.png';
 import familyHumanizationImg from './assets/images/family_humanization_project_1782495984213.jpg';
 import conversatorioPazImg from './assets/images/conversatorio_paz_1782916002667.jpg';
 import conversatorioEjercitoImg from './assets/images/conversatorio_ejercito_1782943297764.jpg';
@@ -308,7 +308,7 @@ export const PROJECTS_LIST: Project[] = [
     longDescription: 'Nuestra escuela de fútbol para el desarrollo social utiliza el deporte rey como pretexto pedagógico para formar en valores. El juego limpio, la equidad de género y la solidaridad comunitaria son las reglas principales. Se ofrecen entrenamientos estructurados y se organizan torneos interbarriales orientados a la integración familiar y vecinal.',
     iconName: 'UserCheck',
     impactMetrics: '280 niños y niñas beneficiados con uniformes, acompañamiento psicosocial y canchas seguras.',
-    image: 'https://lh3.googleusercontent.com/d/1i64q3Z6AsSp874DB7QpBrd-wQqMn0LAP'
+    image: footballImg
   },
   {
     id: 'proj-humanizacion',

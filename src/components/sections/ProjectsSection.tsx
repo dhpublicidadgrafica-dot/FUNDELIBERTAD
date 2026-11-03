@@ -7,6 +7,7 @@ import { motion } from 'motion/react';
 import { Shield, Sparkles, BookOpen, Handshake, Sprout, Eye, Home, UserCheck, Sun } from 'lucide-react';
 import { PROJECTS_LIST } from '../../data';
 import { Project } from '../../types';
+import AdaptiveImage from '../AdaptiveImage';
 
 export default function ProjectsSection() {
   // Map project icon name to Lucide React component
@@ -49,25 +50,21 @@ export default function ProjectsSection() {
               className="bg-white rounded-2xl border border-slate-100 hover:border-slate-200 hover:shadow-xs transition-all overflow-hidden flex flex-col justify-between"
             >
               <div className="flex flex-col h-full">
-                {/* Photo Header */}
-                <div className="h-56 relative overflow-hidden bg-slate-100">
-                  <img
-                    src={proj.image}
-                    alt={proj.title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-103"
-                    referrerPolicy="no-referrer"
-                  />
-                  {/* Overlay banner */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2 z-10">
-                    <div className="w-8 h-8 rounded-lg bg-white/95 flex items-center justify-center">
+                {/* Photo Header with automatic adaptive sizing */}
+                <AdaptiveImage
+                  src={proj.image}
+                  alt={proj.title}
+                  containerClassName="h-56 relative overflow-hidden bg-white border-b border-slate-100 flex items-center justify-center group"
+                >
+                  <div className="absolute bottom-3 left-3 flex items-center gap-2 z-20">
+                    <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-xs border border-slate-200/80">
                       {getProjectIcon(proj.iconName)}
                     </div>
-                    <span className="text-white text-xs font-bold tracking-tight bg-slate-900/40 px-2 py-0.5 rounded backdrop-blur-xs">
+                    <span className="text-slate-800 text-xs font-bold tracking-tight bg-white/95 px-2.5 py-1 rounded-md shadow-xs border border-slate-200/80">
                       Proyecto Activo
                     </span>
                   </div>
-                </div>
+                </AdaptiveImage>
 
                 {/* Content Segment */}
                 <div className="p-6 flex-1 flex flex-col justify-between space-y-3">

@@ -9,6 +9,7 @@ import { Calendar, PlayCircle, Eye, Image as ImageIcon, X, FolderKanban, Users, 
 import { LATEST_ACTIVITIES } from '../../data';
 import { Activity } from '../../types';
 import familyHumanizationImg from '../../assets/images/family_humanization_project_1782495984213.jpg';
+import AdaptiveImage from '../AdaptiveImage';
 
 export default function ActivitiesSection() {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
@@ -76,17 +77,15 @@ export default function ActivitiesSection() {
               className="bg-white rounded-2xl border border-slate-100 shadow-xs overflow-hidden text-left flex flex-col justify-between cursor-pointer hover:shadow-md transition-all duration-300 group"
             >
               <div>
-                <div className="h-48 bg-slate-100 overflow-hidden relative">
-                  <img
-                    src={act.image}
-                    alt={act.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
-                    referrerPolicy="no-referrer"
-                  />
-                  <span className="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-xs text-white px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+                <AdaptiveImage
+                  src={act.image}
+                  alt={act.title}
+                  containerClassName="h-52 bg-white border-b border-slate-100 overflow-hidden relative flex items-center justify-center"
+                >
+                  <span className="absolute top-3 left-3 bg-white/95 text-slate-800 border border-slate-200/80 shadow-xs px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider z-20">
                     {act.category}
                   </span>
-                </div>
+                </AdaptiveImage>
                 <div className="p-5 space-y-2">
                   <h3 className="font-display font-bold text-sm text-slate-900 leading-snug group-hover:text-sky-800 transition-colors">
                     {act.title}
@@ -122,27 +121,24 @@ export default function ActivitiesSection() {
               id="activity-modal-content"
             >
               {/* Cover Image */}
-              <div className="h-56 relative bg-slate-100 shrink-0">
-                <img
-                  src={selectedActivity.image}
-                  alt={selectedActivity.title}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+              <AdaptiveImage
+                src={selectedActivity.image}
+                alt={selectedActivity.title}
+                containerClassName="h-64 sm:h-72 relative bg-white border-b border-slate-100 shrink-0 flex items-center justify-center overflow-hidden"
+              >
                 <button
                   id="close-activity-btn"
                   onClick={() => setSelectedActivity(null)}
-                  className="absolute right-4 top-4 p-2 bg-slate-900/40 hover:bg-slate-900/60 text-white rounded-full transition-all"
+                  className="absolute right-4 top-4 p-2 bg-white/90 hover:bg-white text-slate-700 hover:text-slate-900 rounded-full transition-all z-20 cursor-pointer shadow-md border border-slate-200/80"
                 >
                   <X className="w-5 h-5" />
                 </button>
-                <div className="absolute bottom-4 left-6 text-white space-y-1">
-                  <span className="text-[10px] bg-sky-500 text-white font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                <div className="absolute bottom-4 left-6 z-20">
+                  <span className="text-[10px] bg-sky-600 text-white font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-xs">
                     {selectedActivity.category}
                   </span>
                 </div>
-              </div>
+              </AdaptiveImage>
 
               {/* Scrollable Content */}
               <div className="overflow-y-auto p-6 md:p-8 space-y-6">

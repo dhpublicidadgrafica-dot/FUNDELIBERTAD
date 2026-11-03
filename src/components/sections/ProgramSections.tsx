@@ -14,6 +14,7 @@ import {
 import internshipImg from '../../assets/images/fundelibertad_internship_1782489676477.jpg';
 import reportsImg from '../../assets/images/fundelibertad_reports_1782489690540.jpg';
 import legalImg from '../../assets/images/fundelibertad_legal_1782489703836.jpg';
+import AdaptiveImage from '../AdaptiveImage';
 
 interface ProgramSectionsProps {
   initialSubsection?: string;
@@ -183,14 +184,11 @@ export default function ProgramSections({ initialSubsection = 'internships' }: P
                     </div>
                   </div>
                   
-                  <div className="h-64 md:h-full min-h-[250px] rounded-xl overflow-hidden bg-slate-50 border border-slate-100">
-                    <img
-                      src="https://lh3.googleusercontent.com/d/1VOAa3Fwpv9QvlaDHN7PP8mWY-jYImtzN"
-                      alt="Prácticas universitarias FUNDELIBERTAD"
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
+                  <AdaptiveImage
+                    src="https://lh3.googleusercontent.com/d/1VOAa3Fwpv9QvlaDHN7PP8mWY-jYImtzN"
+                    alt="Prácticas universitarias FUNDELIBERTAD"
+                    containerClassName="h-64 md:h-full min-h-[250px] rounded-xl overflow-hidden bg-white border border-slate-200/80"
+                  />
                 </div>
               </div>
 
@@ -209,14 +207,11 @@ export default function ProgramSections({ initialSubsection = 'internships' }: P
                     </div>
                   </div>
                   
-                  <div className="h-64 md:h-full min-h-[250px] rounded-xl overflow-hidden bg-white border border-slate-100 flex items-center justify-center">
-                    <img
-                      src="https://lh3.googleusercontent.com/d/1EvbiisDrvz4JgZf3o388N7PeKMP5dxKP"
-                      alt="Pasantías en Contabilidad y Finanzas - SENA"
-                      className="max-w-full max-h-full object-contain"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
+                  <AdaptiveImage
+                    src="https://lh3.googleusercontent.com/d/1EvbiisDrvz4JgZf3o388N7PeKMP5dxKP"
+                    alt="Pasantías en Contabilidad y Finanzas - SENA"
+                    containerClassName="h-64 md:h-full min-h-[250px] rounded-xl overflow-hidden bg-white border border-slate-200/80"
+                  />
                 </div>
               </div>
 
@@ -652,118 +647,115 @@ export default function ProgramSections({ initialSubsection = 'internships' }: P
                         </div>
                       </div>
                       
-                      <div className="lg:col-span-1 h-64 lg:h-80 rounded-xl overflow-hidden bg-slate-50 border border-slate-100">
-                        <img
-                          src={
-                            isCaso2 
-                              ? "https://lh3.googleusercontent.com/d/1bDnC-hfE7sS3eU-b_BhWOyHmzOQUso0n" 
-                            : isCaso3 
-                              ? "https://lh3.googleusercontent.com/d/1adoqJROSjTXRuglqUj83KcDBNyniZj96" 
-                            : isCaso4 
-                              ? "https://lh3.googleusercontent.com/d/1udDGxkm6D1AZ5tk034xYcCugtHGG4l6P" 
-                            : isCaso5 
-                              ? "https://lh3.googleusercontent.com/d/1dKTp2UO9qozk0jfAl64yPHJw2RxWvD9Z" 
-                            : isCaso6 
-                              ? "https://lh3.googleusercontent.com/d/1SPeNo9o92rBmQipCNnkpS1UDZj5CkbEj" 
-                            : isCaso7 
-                              ? "https://lh3.googleusercontent.com/d/1JAOjZGuP5Ithu9Q3k29sXmOATIJ9Gch0" 
-                            : isCaso8 
-                              ? "https://lh3.googleusercontent.com/d/1DsdM0e27mtu_3ExeACFqvKBc9Zngid1n" 
-                            : isCaso9 
-                              ? "https://lh3.googleusercontent.com/d/1zQ_8dovIpzc5O08Kf2xgfiWzLoOByZCf" 
-                              : isCaso10 
-                              ? "https://lh3.googleusercontent.com/d/188DebVLM5gJZxdFH4m6BBTe-zEV5QBtk" 
-                              : isCaso11 
-                              ? "https://lh3.googleusercontent.com/d/1hQLcFSlScmt7G0Kk3f9w-30oGteiVf4Y" 
-                              : isCaso12 
-                              ? "https://lh3.googleusercontent.com/d/1Snvq2wgD-2DU7lMVgvYqg6JTwY7S7ksh" 
-                              : isCaso13 
-                              ? "https://lh3.googleusercontent.com/d/1wL0wyRkooLrjB5CskZP8PexvWNpObZs2" 
-                              : isCaso14 
-                              ? "https://lh3.googleusercontent.com/d/1iR4WDs72NnVxU18gO4PLgHKHG5DeyJlf" 
-                              : isCaso15 
-                              ? "https://lh3.googleusercontent.com/d/1u9f33ridYSnOuC6brLLa6OGgkkUsQwoh" 
-                              : isCaso16 
-                              ? "https://lh3.googleusercontent.com/d/1Sjsr8VcyJgG0RRwmzzYa7CIwHu3A8G8a" 
-                              : isCaso17 
-                              ? "https://lh3.googleusercontent.com/d/13Sv4pxyNuzVKUVeCBYQdj8N5baxfevHo" 
-                              : isCaso18 
-                              ? "https://lh3.googleusercontent.com/d/1CgD_tGkLRJ3JLOvqsJ4JFFgrSFNBOk2K" 
-                              : isCaso19 
-                              ? "https://lh3.googleusercontent.com/d/1W2BgI3ixk_4IA6SU358h5vTNQ5f8IAXJ" 
-                              : isCaso20 
-                              ? "https://lh3.googleusercontent.com/d/1a_4RAL9cwm4_ogeusQ6trrSnkl9D75dJ" 
-                              : isCaso21 
-                              ? "https://lh3.googleusercontent.com/d/10KhIF0T7kYj0C5OXtzGBMRMA5BbsWp7r" 
-                              : isCaso22 
-                              ? "https://lh3.googleusercontent.com/d/1k9H9QIClLlDbnGh-68PhLwXmHj2MWvBZ" 
-                              : isCaso23 
-                              ? "https://lh3.googleusercontent.com/d/11e1lbmeK-PV-ApPRcdwQL1OQggzdQQ-0" 
-                              : isCaso24 
-                              ? "https://lh3.googleusercontent.com/d/1YZ2D3qWXMrdoI2E3skuakxxcOAgx8StF" 
-                              : isCaso25 
-                              ? "https://lh3.googleusercontent.com/d/11k_VvOeCNz_HHI2-2rDe8jXGKPIPmen2" 
-                              : isCaso26 
-                              ? "https://lh3.googleusercontent.com/d/16LjDJt03nDLwJA5UKeykdKaNsdcJWPDk" 
-                              : reportsImg
-                          }
-                          alt={
-                            isCaso2
-                              ? "Violación a la Seguridad Social y la Salud"
-                              : isCaso3
-                              ? "Indigencia y mendicidad"
-                              : isCaso4
-                              ? "La Nueva EPS viola el derecho a la salud"
-                              : isCaso5
-                              ? "Violación al derecho a la seguridad social"
-                              : isCaso6
-                              ? "Corrupción en control interno"
-                              : isCaso7
-                              ? "Violación a los derechos humanos y derecho a la salud"
-                              : isCaso8
-                              ? "Inoperancia de la Cámara de Comercio de Medellín"
-                              : isCaso9
-                              ? "Violación al derecho a la salud y responsabilidad médica"
-                              : isCaso10
-                              ? "Mal servicio en la Nueva EPS Guayabal"
-                              : isCaso11
-                              ? "¿Existe la justicia en Colombia?"
-                              : isCaso12
-                              ? "Mala administración de la Alcaldía de Medellín"
-                              : isCaso13
-                              ? "No hay transparencia en la Alcaldía de Medellín"
-                              : isCaso14
-                              ? "Corrupción en la Comisaría 15 de Guayabal"
-                              : isCaso15
-                              ? "Desescolarización en las instituciones educativas"
-                              : isCaso16
-                              ? "¿Y los sin techo qué?"
-                              : isCaso17
-                              ? "Visita de líder social de Antioquia"
-                              : isCaso18
-                              ? "Mendicidad e indigencia en el Parque de Cristo Rey"
-                              : isCaso19
-                              ? "Indigencia en el Barrio Trinidad"
-                              : isCaso20
-                              ? "Mal estado de vías en el sector El Rodeo"
-                              : isCaso21
-                              ? "Mala prestación de servicio de transporte público SOLOBUS"
-                              : isCaso22
-                              ? "Abuso de autoridad por Guardas de Tránsito"
-                              : isCaso23
-                              ? "Despido injusto y sin liquidación"
-                              : isCaso24
-                              ? "Contaminación y abandono en el Parque Natural Mallorca"
-                              : isCaso25
-                              ? "Despido injusto y sin liquidación - Miguel Ángel Rodríguez"
-                              : isCaso26
-                              ? "Indigencia en el Parque de Cristo Rey - Guayabal"
-                              : 'Denuncias DDHH FUNDELIBERTAD'
-                          }
-                          className="w-full h-full object-cover"
-                          referrerPolicy="no-referrer"
-                        />
-                      </div>
+                      <AdaptiveImage
+                        src={
+                          isCaso2 
+                            ? "https://lh3.googleusercontent.com/d/1bDnC-hfE7sS3eU-b_BhWOyHmzOQUso0n" 
+                          : isCaso3 
+                            ? "https://lh3.googleusercontent.com/d/1adoqJROSjTXRuglqUj83KcDBNyniZj96" 
+                          : isCaso4 
+                            ? "https://lh3.googleusercontent.com/d/1udDGxkm6D1AZ5tk034xYcCugtHGG4l6P" 
+                          : isCaso5 
+                            ? "https://lh3.googleusercontent.com/d/1dKTp2UO9qozk0jfAl64yPHJw2RxWvD9Z" 
+                          : isCaso6 
+                            ? "https://lh3.googleusercontent.com/d/1SPeNo9o92rBmQipCNnkpS1UDZj5CkbEj" 
+                          : isCaso7 
+                            ? "https://lh3.googleusercontent.com/d/1JAOjZGuP5Ithu9Q3k29sXmOATIJ9Gch0" 
+                          : isCaso8 
+                            ? "https://lh3.googleusercontent.com/d/1DsdM0e27mtu_3ExeACFqvKBc9Zngid1n" 
+                          : isCaso9 
+                            ? "https://lh3.googleusercontent.com/d/1zQ_8dovIpzc5O08Kf2xgfiWzLoOByZCf" 
+                            : isCaso10 
+                            ? "https://lh3.googleusercontent.com/d/188DebVLM5gJZxdFH4m6BBTe-zEV5QBtk" 
+                            : isCaso11 
+                            ? "https://lh3.googleusercontent.com/d/1hQLcFSlScmt7G0Kk3f9w-30oGteiVf4Y" 
+                            : isCaso12 
+                            ? "https://lh3.googleusercontent.com/d/1Snvq2wgD-2DU7lMVgvYqg6JTwY7S7ksh" 
+                            : isCaso13 
+                            ? "https://lh3.googleusercontent.com/d/1wL0wyRkooLrjB5CskZP8PexvWNpObZs2" 
+                            : isCaso14 
+                            ? "https://lh3.googleusercontent.com/d/1iR4WDs72NnVxU18gO4PLgHKHG5DeyJlf" 
+                            : isCaso15 
+                            ? "https://lh3.googleusercontent.com/d/1u9f33ridYSnOuC6brLLa6OGgkkUsQwoh" 
+                            : isCaso16 
+                            ? "https://lh3.googleusercontent.com/d/1Sjsr8VcyJgG0RRwmzzYa7CIwHu3A8G8a" 
+                            : isCaso17 
+                            ? "https://lh3.googleusercontent.com/d/13Sv4pxyNuzVKUVeCBYQdj8N5baxfevHo" 
+                            : isCaso18 
+                            ? "https://lh3.googleusercontent.com/d/1CgD_tGkLRJ3JLOvqsJ4JFFgrSFNBOk2K" 
+                            : isCaso19 
+                            ? "https://lh3.googleusercontent.com/d/1W2BgI3ixk_4IA6SU358h5vTNQ5f8IAXJ" 
+                            : isCaso20 
+                            ? "https://lh3.googleusercontent.com/d/1a_4RAL9cwm4_ogeusQ6trrSnkl9D75dJ" 
+                            : isCaso21 
+                            ? "https://lh3.googleusercontent.com/d/10KhIF0T7kYj0C5OXtzGBMRMA5BbsWp7r" 
+                            : isCaso22 
+                            ? "https://lh3.googleusercontent.com/d/1k9H9QIClLlDbnGh-68PhLwXmHj2MWvBZ" 
+                            : isCaso23 
+                            ? "https://lh3.googleusercontent.com/d/11e1lbmeK-PV-ApPRcdwQL1OQggzdQQ-0" 
+                            : isCaso24 
+                            ? "https://lh3.googleusercontent.com/d/1YZ2D3qWXMrdoI2E3skuakxxcOAgx8StF" 
+                            : isCaso25 
+                            ? "https://lh3.googleusercontent.com/d/11k_VvOeCNz_HHI2-2rDe8jXGKPIPmen2" 
+                            : isCaso26 
+                            ? "https://lh3.googleusercontent.com/d/16LjDJt03nDLwJA5UKeykdKaNsdcJWPDk" 
+                            : reportsImg
+                        }
+                        alt={
+                          isCaso2
+                            ? "Violación a la Seguridad Social y la Salud"
+                            : isCaso3
+                            ? "Indigencia y mendicidad"
+                            : isCaso4
+                            ? "La Nueva EPS viola el derecho a la salud"
+                            : isCaso5
+                            ? "Violación al derecho a la seguridad social"
+                            : isCaso6
+                            ? "Corrupción en control interno"
+                            : isCaso7
+                            ? "Violación a los derechos humanos y derecho a la salud"
+                            : isCaso8
+                            ? "Inoperancia de la Cámara de Comercio de Medellín"
+                            : isCaso9
+                            ? "Violación al derecho a la salud y responsabilidad médica"
+                            : isCaso10
+                            ? "Mal servicio en la Nueva EPS Guayabal"
+                            : isCaso11
+                            ? "¿Existe la justicia en Colombia?"
+                            : isCaso12
+                            ? "Mala administración de la Alcaldía de Medellín"
+                            : isCaso13
+                            ? "No hay transparencia en la Alcaldía de Medellín"
+                            : isCaso14
+                            ? "Corrupción en la Comisaría 15 de Guayabal"
+                            : isCaso15
+                            ? "Desescolarización en las instituciones educativas"
+                            : isCaso16
+                            ? "¿Y los sin techo qué?"
+                            : isCaso17
+                            ? "Visita de líder social de Antioquia"
+                            : isCaso18
+                            ? "Mendicidad e indigencia en el Parque de Cristo Rey"
+                            : isCaso19
+                            ? "Indigencia en el Barrio Trinidad"
+                            : isCaso20
+                            ? "Mal estado de vías en el sector El Rodeo"
+                            : isCaso21
+                            ? "Mala prestación de servicio de transporte público SOLOBUS"
+                            : isCaso22
+                            ? "Abuso de autoridad por Guardas de Tránsito"
+                            : isCaso23
+                            ? "Despido injusto y sin liquidación"
+                            : isCaso24
+                            ? "Contaminación y abandono en el Parque Natural Mallorca"
+                            : isCaso25
+                            ? "Despido injusto y sin liquidación - Miguel Ángel Rodríguez"
+                            : isCaso26
+                            ? "Indigencia en el Parque de Cristo Rey - Guayabal"
+                            : 'Denuncias DDHH FUNDELIBERTAD'
+                        }
+                        containerClassName="lg:col-span-1 h-64 lg:h-80 rounded-xl overflow-hidden bg-white border border-slate-200/80"
+                      />
                     </div>
                   </div>
                 );
@@ -958,14 +950,11 @@ export default function ProgramSections({ initialSubsection = 'internships' }: P
                         </p>
                       </div>
                       
-                      <div className="lg:col-span-1 h-64 lg:h-80 rounded-xl overflow-hidden bg-slate-50 border border-slate-100">
-                        <img
-                          src={index === 2 ? "https://lh3.googleusercontent.com/d/1I-HrHiEfoKEZCSVZ4LWLYKRDHwlgXpWq" : index === 3 ? "https://lh3.googleusercontent.com/d/1Qdjmjr0XHZ5zPjjRCMPNhG8ckkyOfv3p" : index === 4 ? "https://lh3.googleusercontent.com/d/1chXF5yQIojGBCj8bL0L415VhAehgpmJv" : index === 5 ? "https://lh3.googleusercontent.com/d/1rweq5ANbhu5336VGZdfTsNR_Xlr0Egsz" : index === 6 ? "https://lh3.googleusercontent.com/d/1UuP1gcCr05VTQh9jE-Bj1CI3p7dF3TPs" : index === 7 ? "https://lh3.googleusercontent.com/d/1e60TTT-7lR0UdX9BS66Bax1ScKrQdcB0" : index === 8 ? "https://lh3.googleusercontent.com/d/12_zHhY0dc4_6woepQESb9xX5NK-4LwCO" : index === 9 ? "https://lh3.googleusercontent.com/d/1cS9GTFuI_qAjGgVQrH4vTkPrMVNriKH5" : index === 10 ? "https://lh3.googleusercontent.com/d/1IePS57YfgCt1yfaLi_taodp6Cm6zUiNF" : index === 11 ? "https://lh3.googleusercontent.com/d/1GNzz6_5WiN_w4pkpgKjn228UkuaILQ28" : index === 12 ? "https://lh3.googleusercontent.com/d/10Lhq2VcwB9wbx1m5V4TGNk0WD1zvEfWF" : index === 13 ? "https://lh3.googleusercontent.com/d/1ka__kkNNsQgGVCsRTViBvGfyBo6k-SN7" : index === 14 ? "https://lh3.googleusercontent.com/d/1TnbhG6ZoDn50Dy-urPOX6d4jcvBz7hQ-" : index === 15 ? "https://lh3.googleusercontent.com/d/1HR6oaevZT0_uPscXEqM8iKmn_uFzryIR" : index === 16 ? "https://lh3.googleusercontent.com/d/1HNeuF7dGnU31KaaEREdPUWJpZ3xGsmnp" : index === 17 ? "https://lh3.googleusercontent.com/d/1ypoioOQVhdtxvGfOWJF4VRJTV8PCHj6J" : index === 18 ? "https://lh3.googleusercontent.com/d/1CjhsUtXTYvzjkHCKIYdNXENFf346gPym" : index === 19 ? "https://lh3.googleusercontent.com/d/1kmHMnsqBcbaa9SkaZ1R_DtDVEXkgtRHg" : index === 20 ? "https://lh3.googleusercontent.com/d/18LuJcJsX3MBhHHgbjUP5DB1WDJJwmX34" : index === 21 ? "https://lh3.googleusercontent.com/d/1rweq5ANbhu5336VGZdfTsNR_Xlr0Egsz" : index === 22 ? "https://lh3.googleusercontent.com/d/1Sy2F_LkuhLzZxPw_Xuzdu0zUqM6-V46B" : index === 23 ? "https://lh3.googleusercontent.com/d/1DRT_-Kxyy8NUSZP0e0C2glri0CNC514n" : index === 24 ? "https://lh3.googleusercontent.com/d/1B1SwMeOAedBjqD3U7kcjl1pIpAqfjw0L" : index === 25 ? "https://lh3.googleusercontent.com/d/1XDe60bQmlffpr44LVfqALziIpEnqYbqd" : index === 26 ? "https://lh3.googleusercontent.com/d/1HR6oaevZT0_uPscXEqM8iKmn_uFzryIR" : index === 27 ? "https://lh3.googleusercontent.com/d/1we7MTYMCeG7gfjqvkcsVd_Dzb8fUHQNA" : index === 28 ? "https://lh3.googleusercontent.com/d/1Si1dej5PqaNkqYJHo1zsKyF-k3Eg80p2" : index === 29 ? "https://lh3.googleusercontent.com/d/1hMdndrr8Ac3_CYZT47XzAGE4Cb5ldZHa" : index === 30 ? "https://lh3.googleusercontent.com/d/1BNuwxDQ024uX_sOw1YID6DVX05MhPsXu" : index === 31 ? "https://lh3.googleusercontent.com/d/1p1fIBACH78v6WdfariP7v2ccP1r1Tu_5" : index === 32 ? "https://lh3.googleusercontent.com/d/184e5GVNDfBjVyymJKOQUbLUDdvsQABQ0" : index === 33 ? "https://lh3.googleusercontent.com/d/1TuJyliS-G99TYaulPRTT0D0-DdBmvRmp" : index === 34 ? "https://lh3.googleusercontent.com/d/16f_m6vBT_ctYTBEA7kBvsfQwx8baqeHr" : legalImg}
-                          alt="Consultorio jurídico FUNDELIBERTAD"
-                          className="w-full h-full object-cover"
-                          referrerPolicy="no-referrer"
-                        />
-                      </div>
+                      <AdaptiveImage
+                        src={index === 2 ? "https://lh3.googleusercontent.com/d/1I-HrHiEfoKEZCSVZ4LWLYKRDHwlgXpWq" : index === 3 ? "https://lh3.googleusercontent.com/d/1Qdjmjr0XHZ5zPjjRCMPNhG8ckkyOfv3p" : index === 4 ? "https://lh3.googleusercontent.com/d/1chXF5yQIojGBCj8bL0L415VhAehgpmJv" : index === 5 ? "https://lh3.googleusercontent.com/d/1rweq5ANbhu5336VGZdfTsNR_Xlr0Egsz" : index === 6 ? "https://lh3.googleusercontent.com/d/1UuP1gcCr05VTQh9jE-Bj1CI3p7dF3TPs" : index === 7 ? "https://lh3.googleusercontent.com/d/1e60TTT-7lR0UdX9BS66Bax1ScKrQdcB0" : index === 8 ? "https://lh3.googleusercontent.com/d/12_zHhY0dc4_6woepQESb9xX5NK-4LwCO" : index === 9 ? "https://lh3.googleusercontent.com/d/1cS9GTFuI_qAjGgVQrH4vTkPrMVNriKH5" : index === 10 ? "https://lh3.googleusercontent.com/d/1IePS57YfgCt1yfaLi_taodp6Cm6zUiNF" : index === 11 ? "https://lh3.googleusercontent.com/d/1GNzz6_5WiN_w4pkpgKjn228UkuaILQ28" : index === 12 ? "https://lh3.googleusercontent.com/d/10Lhq2VcwB9wbx1m5V4TGNk0WD1zvEfWF" : index === 13 ? "https://lh3.googleusercontent.com/d/1ka__kkNNsQgGVCsRTViBvGfyBo6k-SN7" : index === 14 ? "https://lh3.googleusercontent.com/d/1TnbhG6ZoDn50Dy-urPOX6d4jcvBz7hQ-" : index === 15 ? "https://lh3.googleusercontent.com/d/1HR6oaevZT0_uPscXEqM8iKmn_uFzryIR" : index === 16 ? "https://lh3.googleusercontent.com/d/1HNeuF7dGnU31KaaEREdPUWJpZ3xGsmnp" : index === 17 ? "https://lh3.googleusercontent.com/d/1ypoioOQVhdtxvGfOWJF4VRJTV8PCHj6J" : index === 18 ? "https://lh3.googleusercontent.com/d/1CjhsUtXTYvzjkHCKIYdNXENFf346gPym" : index === 19 ? "https://lh3.googleusercontent.com/d/1kmHMnsqBcbaa9SkaZ1R_DtDVEXkgtRHg" : index === 20 ? "https://lh3.googleusercontent.com/d/18LuJcJsX3MBhHHgbjUP5DB1WDJJwmX34" : index === 21 ? "https://lh3.googleusercontent.com/d/1rweq5ANbhu5336VGZdfTsNR_Xlr0Egsz" : index === 22 ? "https://lh3.googleusercontent.com/d/1Sy2F_LkuhLzZxPw_Xuzdu0zUqM6-V46B" : index === 23 ? "https://lh3.googleusercontent.com/d/1DRT_-Kxyy8NUSZP0e0C2glri0CNC514n" : index === 24 ? "https://lh3.googleusercontent.com/d/1B1SwMeOAedBjqD3U7kcjl1pIpAqfjw0L" : index === 25 ? "https://lh3.googleusercontent.com/d/1XDe60bQmlffpr44LVfqALziIpEnqYbqd" : index === 26 ? "https://lh3.googleusercontent.com/d/1HR6oaevZT0_uPscXEqM8iKmn_uFzryIR" : index === 27 ? "https://lh3.googleusercontent.com/d/1we7MTYMCeG7gfjqvkcsVd_Dzb8fUHQNA" : index === 28 ? "https://lh3.googleusercontent.com/d/1Si1dej5PqaNkqYJHo1zsKyF-k3Eg80p2" : index === 29 ? "https://lh3.googleusercontent.com/d/1hMdndrr8Ac3_CYZT47XzAGE4Cb5ldZHa" : index === 30 ? "https://lh3.googleusercontent.com/d/1BNuwxDQ024uX_sOw1YID6DVX05MhPsXu" : index === 31 ? "https://lh3.googleusercontent.com/d/1p1fIBACH78v6WdfariP7v2ccP1r1Tu_5" : index === 32 ? "https://lh3.googleusercontent.com/d/184e5GVNDfBjVyymJKOQUbLUDdvsQABQ0" : index === 33 ? "https://lh3.googleusercontent.com/d/1TuJyliS-G99TYaulPRTT0D0-DdBmvRmp" : index === 34 ? "https://lh3.googleusercontent.com/d/16f_m6vBT_ctYTBEA7kBvsfQwx8baqeHr" : legalImg}
+                        alt="Consultorio jurídico FUNDELIBERTAD"
+                        containerClassName="lg:col-span-1 h-64 lg:h-80 rounded-xl overflow-hidden bg-white border border-slate-200/80"
+                      />
                     </div>
                   </div>
                 );
