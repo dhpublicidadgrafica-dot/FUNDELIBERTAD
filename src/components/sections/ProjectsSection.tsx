@@ -56,13 +56,10 @@ export default function ProjectsSection() {
                   alt={proj.title}
                   containerClassName="h-56 relative overflow-hidden bg-white border-b border-slate-100 flex items-center justify-center group"
                 >
-                  <div className="absolute bottom-3 left-3 flex items-center gap-2 z-20">
+                  <div className="absolute bottom-3 left-3 flex items-center z-20">
                     <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-xs border border-slate-200/80">
                       {getProjectIcon(proj.iconName)}
                     </div>
-                    <span className="text-slate-800 text-xs font-bold tracking-tight bg-white/95 px-2.5 py-1 rounded-md shadow-xs border border-slate-200/80">
-                      Proyecto Activo
-                    </span>
                   </div>
                 </AdaptiveImage>
 

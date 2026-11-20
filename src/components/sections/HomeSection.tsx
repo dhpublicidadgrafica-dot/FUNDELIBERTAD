@@ -335,11 +335,7 @@ export default function HomeSection({ onPageChange, onDonateClick }: HomeSection
                   src={proj.image}
                   alt={proj.title}
                   containerClassName="h-48 relative overflow-hidden bg-white border-b border-slate-100 flex items-center justify-center"
-                >
-                  <span className="absolute top-3 left-3 bg-white/95 text-slate-800 border border-slate-200/80 shadow-xs px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider z-20">
-                    Proyecto Activo
-                  </span>
-                </AdaptiveImage>
+                />
                 <div className="p-6 space-y-2">
                   <h3 className="font-display font-bold text-base text-slate-900 leading-snug group-hover:text-sky-700 transition-colors">
                     {proj.title}
